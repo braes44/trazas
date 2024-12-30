@@ -8,49 +8,89 @@
 </head>
 <body>
     <div class="container">
-        <h1>Cálculo de Límites de Limpieza</h1>
-        <p>Ingrese los parámetros requeridos. El sistema calculará automáticamente los límites utilizando las fórmulas de **Dosis Terapéutica**, **Dosis Tóxica**, y **10 ppm**.</p>
+        <h1>Cálculo de Límites de Limpieza y NOEL</h1>
+        <p>Complete los campos con la información necesaria. El sistema calculará los límites de limpieza según las fórmulas descritas en el documento y seleccionará el menor como el límite de aceptación.</p>
+        
         <form id="cleaningForm">
+            <h2>Cálculo de NOEL</h2>
+            <p>NOEL = DL50 × Peso / Factor de Seguridad
+ 
+
+                
+            </p>
+            <p> 
+ 
+
+                Proporcione los siguientes datos:
+            </p>
             <div class="input-group">
-                <label for="dosisA">Dosis terapéutica mínima diaria del Producto A (mg)</label>
+                <label for="dl50">DL50 (mg/kg de peso corporal):  
+                    <small>La dosis letal que mata al 50% de la población de prueba.</small>
+                </label>
+                <input type="number" id="dl50" required>
+            </div>
+            <div class="input-group">
+                <label for="peso">Peso promedio del adulto (kg):  
+                    <small>Generalmente 70 kg para cálculos estándar.</small>
+                </label>
+                <input type="number" id="peso" value="70" required>
+            </div>
+            <div class="input-group">
+                <label for="factorSeguridadNOEL">Factor de seguridad para NOEL:  
+                    <small>Proporcione el valor según las características del producto: Compuestos de investigación = 10,000 - 100,000
+Productos parenterales y oftálmicos =	1,000 - 10,000
+Formas sólidas (tabletas, cápsulas) =	100 - 1,000
+Productos tópicos no oftálmicos =	10 - 100</small>
+                </label>
+                <input type="number" id="factorSeguridadNOEL" required>
+            </div>
+
+            <h2>Límites de Limpieza</h2>
+            <p>Ingrese los siguientes datos para calcular los límites de limpieza:</p>
+            <div class="input-group">
+                <label for="dosisA">Dosis terapéutica mínima diaria del Producto A (mg):  
+                    <small>La dosis más baja recomendada del Producto A.</small>
+                </label>
                 <input type="number" id="dosisA" required>
             </div>
             <div class="input-group">
-                <label for="factorSeguridad">Factor de seguridad</label>
+                <label for="factorSeguridad">Factor de seguridad:  
+                    <small>Determinado por la forma farmacéutica: Compuestos de investigación = 10,000 - 100,000
+Productos parenterales y oftálmicos =	1,000 - 10,000
+Formas sólidas (tabletas, cápsulas) =	100 - 1,000
+Productos tópicos no oftálmicos =	10 - 100.</small>
+                </label>
                 <input type="number" id="factorSeguridad" required>
             </div>
             <div class="input-group">
-                <label for="unidadesB">Número máximo de unidades diarias del Producto B</label>
+                <label for="unidadesB">Número máximo de unidades diarias del Producto B:  
+                    <small>El consumo diario máximo del Producto B.</small>
+                </label>
                 <input type="number" id="unidadesB" required>
             </div>
             <div class="input-group">
-                <label for="tamanoLoteB">Tamaño del lote mínimo del Producto B (mg o unidades)</label>
+                <label for="tamanoLoteB">Tamaño del lote mínimo del Producto B (mg o unidades):  
+                    <small>El tamaño más pequeño producido del Producto B.</small>
+                </label>
                 <input type="number" id="tamanoLoteB" required>
             </div>
             <div class="input-group">
-                <label for="areaEquipos">Área superficial de los equipos compartidos (cm²)</label>
+                <label for="areaEquipos">Área superficial de los equipos compartidos (cm²):  
+                    <small>La superficie total de los equipos utilizados en el proceso.</small>
+                </label>
                 <input type="number" id="areaEquipos" required>
             </div>
             <div class="input-group">
-                <label for="areaMuestreo">Área de muestreo (cm²)</label>
+                <label for="areaMuestreo">Área de muestreo (cm²):  
+                    <small>Generalmente 25 cm² según los estándares.</small>
+                </label>
                 <input type="number" id="areaMuestreo" required>
             </div>
-            <div class="input-group">
-                <label for="noel">NOEL (Nivel de efectos no observados en mg)</label>
-                <input type="number" id="noel" required>
-            </div>
-            <div class="input-group">
-                <label for="pesoConsumido">Peso consumido al día del Producto B (mg)</label>
-                <input type="number" id="pesoConsumido" required>
-            </div>
-            <div class="input-group">
-                <label for="r">R (mg de A por kg de B, generalmente 10)</label>
-                <input type="number" id="r" value="10" required>
-            </div>
-            <button type="button" onclick="calcularLimites()">Calcular</button>
+            <button type="button" onclick="calcularLimites()">Calcular y Generar PDF</button>
         </form>
         <div id="resultados" class="result"></div>
     </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.4.0/jspdf.umd.min.js"></script>
     <script src="script.js"></script>
 </body>
 </html>
