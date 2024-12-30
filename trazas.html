@@ -3,143 +3,48 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cálculo de Límites de Limpieza</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 20px;
-        }
-        .container {
-            max-width: 700px;
-            margin: auto;
-        }
-        .input-group {
-            margin-bottom: 15px;
-        }
-        label {
-            font-weight: bold;
-        }
-        input {
-            width: 100%;
-            padding: 8px;
-            margin-top: 5px;
-            box-sizing: border-box;
-        }
-        button {
-            background-color: #4CAF50;
-            color: white;
-            border: none;
-            padding: 10px 15px;
-            cursor: pointer;
-        }
-        button:hover {
-            background-color: #45a049;
-        }
-        .result {
-            margin-top: 20px;
-            padding: 10px;
-            background: #f4f4f4;
-            border: 1px solid #ddd;
-        }
-        .timestamp {
-            font-size: 0.9em;
-            color: #555;
-            text-align: right;
-        }
-    </style>
+    <title>Calculo de Trazas</title>
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
     <div class="container">
-        <h1>Cálculo de Límites de Limpieza</h1>
-        <p>Ingrese los parámetros requeridos. El sistema calculará automáticamente los límites utilizando las fórmulas de **Dosis Terapéutica**, **Dosis Tóxica**, y **10 ppm**.</p>
-        <form id="cleaningForm">
-            <div class="input-group">
-                <label for="dosisA">Dosis terapéutica mínima diaria del Producto A (mg)</label>
-                <input type="number" id="dosisA" required>
-            </div>
-            <div class="input-group">
-                <label for="factorSeguridad">Factor de seguridad</label>
-                <input type="number" id="factorSeguridad" required>
-            </div>
-            <div class="input-group">
-                <label for="unidadesB">Número máximo de unidades diarias del Producto B</label>
-                <input type="number" id="unidadesB" required>
-            </div>
-            <div class="input-group">
-                <label for="tamanoLoteB">Tamaño del lote mínimo del Producto B (mg o unidades)</label>
-                <input type="number" id="tamanoLoteB" required>
-            </div>
-            <div class="input-group">
-                <label for="areaEquipos">Área superficial de los equipos compartidos (cm²)</label>
-                <input type="number" id="areaEquipos" required>
-            </div>
-            <div class="input-group">
-                <label for="areaMuestreo">Área de muestreo (cm²)</label>
-                <input type="number" id="areaMuestreo" required>
-            </div>
-            <div class="input-group">
-                <label for="noel">NOEL (Nivel de efectos no observados en mg)</label>
-                <input type="number" id="noel" required>
-            </div>
-            <div class="input-group">
-                <label for="pesoConsumido">Peso consumido al día del Producto B (mg)</label>
-                <input type="number" id="pesoConsumido" required>
-            </div>
-            <div class="input-group">
-                <label for="r">R (mg de A por kg de B, generalmente 10)</label>
-                <input type="number" id="r" value="10" required>
-            </div>
-            <button type="button" onclick="calcularLimites()">Calcular</button>
+        <h1>Calculadora de Trazas para Validación de Limpieza</h1>
+        <form id="calculoForm">
+            <label for="valor1">DMPA (mg):</label>
+            <input type="number" id="valor1" name="valor1" required>
+
+            <label for="valor2">Factor de Seguridad (FS):</label>
+            <input type="number" id="valor2" name="valor2" required>
+
+            <label for="valor3">TMLP (mg):</label>
+            <input type="number" id="valor3" name="valor3" required>
+
+            <label for="valor4">VR (ml):</label>
+            <input type="number" id="valor4" name="valor4" required>
+
+            <label for="valor5">AM (cm2):</label>
+            <input type="number" id="valor5" name="valor5" required>
+
+            <label for="valor6">ACE (cm2):</label>
+            <input type="number" id="valor6" name="valor6" required>
+
+            <button type="submit">Calcular</button>
         </form>
-        <div id="resultados" class="result"></div>
+
+        <div id="resultado"></div>
     </div>
+
     <script>
-        function calcularLimites() {
-            const dosisA = parseFloat(document.getElementById("dosisA").value);
-            const factorSeguridad = parseFloat(document.getElementById("factorSeguridad").value);
-            const unidadesB = parseFloat(document.getElementById("unidadesB").value);
-            const tamanoLoteB = parseFloat(document.getElementById("tamanoLoteB").value);
-            const areaEquipos = parseFloat(document.getElementById("areaEquipos").value);
-            const areaMuestreo = parseFloat(document.getElementById("areaMuestreo").value);
-            const noel = parseFloat(document.getElementById("noel").value);
-            const pesoConsumido = parseFloat(document.getElementById("pesoConsumido").value);
-            const r = parseFloat(document.getElementById("r").value);
-            const pesoPromedio = 70; // Peso promedio estándar en kg
-
-            if (!dosisA || !factorSeguridad || !unidadesB || !tamanoLoteB || !areaEquipos || !areaMuestreo || !noel || !pesoConsumido || !r) {
-                alert("Por favor, complete todos los campos.");
-                return;
-            }
-
-            // Cálculo de Dosis Terapéutica
-            const limiteTerapeutico = ((dosisA / factorSeguridad) * (unidadesB / tamanoLoteB) * (areaMuestreo / areaEquipos)).toFixed(4);
-
-            // Cálculo de Dosis Tóxica
-            const limiteToxico = ((noel * pesoPromedio / factorSeguridad) * (tamanoLoteB / pesoConsumido)).toFixed(4);
-
-            // Cálculo de 10 ppm
-            const limitePPM = (r * tamanoLoteB * (areaMuestreo / areaEquipos)).toFixed(4);
-
-            // Comparación para determinar el menor
-            const limites = [limiteTerapeutico, limiteToxico, limitePPM];
-            const limiteAceptacion = Math.min(...limites).toFixed(4);
-
-            // Hora y fecha actual
-            const fecha = new Date();
-            const fechaActual = fecha.toLocaleString();
-
-            // Mostrar resultados
-            document.getElementById("resultados").innerHTML = `
-                <h2>Resultados:</h2>
-                <p><strong>Límite de limpieza por Dosis Terapéutica:</strong> ${limiteTerapeutico} mg</p>
-                <p><strong>Límite de limpieza por Dosis Tóxica:</strong> ${limiteToxico} mg</p>
-                <p><strong>Límite de limpieza por 10 ppm:</strong> ${limitePPM} mg</p>
-                <h3>Límite de aceptación final (valor menor):</h3>
-                <p><strong>${limiteAceptacion} mg</strong></p>
-                <h3>Cálculos realizados el:</h3>
-                <p class="timestamp">${fechaActual}</p>
-            `;
-        }
+        document.getElementById('calculoForm').onsubmit = async function(e) {
+            e.preventDefault();
+            const formData = new FormData(this);
+            const response = await fetch('/calcular', {
+                method: 'POST',
+                body: formData
+            });
+            const data = await response.json();
+            document.getElementById('resultado').innerHTML = 'Resultado: ' + data.resultado + ' ppm';
+        };
     </script>
 </body>
 </html>
