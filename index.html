@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cálculo de Límites de Limpieza</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Cálculo de Límites de Limpieza</h1>
+        <p>Ingrese los parámetros requeridos. El sistema calculará automáticamente los límites utilizando las fórmulas de **Dosis Terapéutica**, **Dosis Tóxica**, y **10 ppm**.</p>
+        <form id="cleaningForm">
+            <div class="input-group">
+                <label for="dosisA">Dosis terapéutica mínima diaria del Producto A (mg)</label>
+                <input type="number" id="dosisA" required>
+            </div>
+            <div class="input-group">
+                <label for="factorSeguridad">Factor de seguridad</label>
+                <input type="number" id="factorSeguridad" required>
+            </div>
+            <div class="input-group">
+                <label for="unidadesB">Número máximo de unidades diarias del Producto B</label>
+                <input type="number" id="unidadesB" required>
+            </div>
+            <div class="input-group">
+                <label for="tamanoLoteB">Tamaño del lote mínimo del Producto B (mg o unidades)</label>
+                <input type="number" id="tamanoLoteB" required>
+            </div>
+            <div class="input-group">
+                <label for="areaEquipos">Área superficial de los equipos compartidos (cm²)</label>
+                <input type="number" id="areaEquipos" required>
+            </div>
+            <div class="input-group">
+                <label for="areaMuestreo">Área de muestreo (cm²)</label>
+                <input type="number" id="areaMuestreo" required>
+            </div>
+            <div class="input-group">
+                <label for="noel">NOEL (Nivel de efectos no observados en mg)</label>
+                <input type="number" id="noel" required>
+            </div>
+            <div class="input-group">
+                <label for="pesoConsumido">Peso consumido al día del Producto B (mg)</label>
+                <input type="number" id="pesoConsumido" required>
+            </div>
+            <div class="input-group">
+                <label for="r">R (mg de A por kg de B, generalmente 10)</label>
+                <input type="number" id="r" value="10" required>
+            </div>
+            <button type="button" onclick="calcularLimites()">Calcular</button>
+        </form>
+        <div id="resultados" class="result"></div>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>
